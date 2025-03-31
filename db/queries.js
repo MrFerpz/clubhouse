@@ -11,3 +11,9 @@ async function printTable() {
     console.log(response.rows);
 }
 
+async function createMessagesTable() {
+    await db.query ("CREATE TABLE messages (id SERIAL PRIMARY KEY, user_id INT NOT NULL, message TEXT NOT NULL, time TIMESTAMP DEFAULT CURRENT_TIMESTAMP, FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);");
+    const response = await db.query("SELECT * FROM messages");
+    console.log(response.rows)
+}
+

@@ -1,6 +1,6 @@
 
-- "Add message" button to members area
-- Return a messages form
+- "Add new post" button to members area
+- Leads to a new message form
 - Submit those messages to a table in PSQL, with columns for author, message, timestamp
 - Render those messages in the members area
 - Add a button to homepage where non-members can see message but not the timestamp and author

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Message Board</title>
+</head>
+<body>
+    <div>Welcome to the message board, <%= locals.user.first_name %></div>
+    <div>If you are a member, you can make new posts, as well as see the authors and timestamps for each post.</div>
+
+    <% if (locals.messages) { %>
+        <% locals.messages.forEach((message) => { %>
+            <div><%= message.time %></div>
+            <div><%= message.user_id %></div>
+            <div><%= message.message %></div>
+            <div></div>
+    <% })} %>
+
+    <% if (locals.user.is_member == false) { %>
+        <a href="join">Join the members club!</a>
+    <% } %>
+
+    <% if (locals.user.is_member == true) { %>
+        <a href="add-message">New Post</a>
+    <% } %>
+
+</body>
+</html>

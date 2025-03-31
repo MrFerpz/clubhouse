@@ -16,7 +16,8 @@ indexRouter.get("/signup-failure", indexController.signupFailureGet);
 indexRouter.get("/join", indexController.joinPageGet);
 indexRouter.post("/join", indexController.joinPagePost);
 indexRouter.get("/join-failure", indexController.joinFailureGet);
-indexRouter.get("/members-area", indexController.membersAreaGet);
-
+indexRouter.get("/message-board", indexController.messageBoardGet);
+indexRouter.post("/add-message", indexController.newMessagePost);
+indexRouter.get("/add-message", indexController.newMessageGet);
 
 module.exports = indexRouter;

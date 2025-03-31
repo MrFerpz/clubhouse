@@ -26,12 +26,9 @@
     <div></div>
      <% }} %>
 
-        <% if (locals.user) { if (locals.user.is_member == true) { %>
-        <a href="/members-area">Members area</a>
-        <div></div>
-     <% }} %>
-
     <% if (locals.user) { %>
+    <a href="/message-board">Message board</a>
+    <div></div>
     <a href="/log-out">Log out</a>
     <div></div>
     <% } %>

@@ -85,15 +85,29 @@ async function joinPagePost(req, res) {
     }
     await db.query("UPDATE users SET is_member = true WHERE id = $1", [req.user.id]);
     console.log("successfully joined the club!");
-    res.render("members-area");
+    res.render("message-board", {user: req.user});
 }
 
 function joinFailureGet(req, res) {
     res.render("join-failure")
 }
 
-function membersAreaGet(req, res) {
-    res.render("members-area")
+function messageBoardGet(req, res) {
+    res.render("message-board", {user: req.user, messages: messageList})
+}
+
+async function newMessagePost(req, res) {
+    const time = Date.now();
+    const message = req.body.message;
+    await db.query("INSERT INTO messages (user_id, message, time) VALUES ($1, $2, (to_timestamp($3 / 1000.0)))", [req.user.id, message, time])
+    console.log("message logged");
+    const response = await db.query("SELECT * FROM messages");
+    const messageList = response.rows;
+    res.render("message-board", {user: req.user, messages: messageList})
+}
+
+function newMessageGet(req, res) {
+    res.render("add-message");
 }
 
 module.exports =  { 
@@ -110,5 +124,7 @@ module.exports =  {
     joinPageGet,
     joinPagePost,
     joinFailureGet,
-    membersAreaGet
+    messageBoardGet,
+    newMessagePost,
+    newMessageGet
 };
