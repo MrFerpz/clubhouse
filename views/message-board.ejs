@@ -11,8 +11,8 @@
 
     <% if (locals.messages) { %>
         <% locals.messages.forEach((message) => { %>
+            <div><%= message.first_name %></div>
             <div><%= message.time %></div>
-            <div><%= message.user_id %></div>
             <div><%= message.message %></div>
             <div></div>
     <% })} %>

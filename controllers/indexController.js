@@ -1,3 +1,4 @@
+const { name } = require('ejs');
 const db = require('../db/pool');
 const bcrypt = require ('bcryptjs');
 
@@ -92,14 +93,17 @@ function joinFailureGet(req, res) {
     res.render("join-failure")
 }
 
-function messageBoardGet(req, res) {
+async function messageBoardGet(req, res) {
+    const response = await db.query("SELECT * FROM messages");
+    const messageList = response.rows;
     res.render("message-board", {user: req.user, messages: messageList})
 }
 
 async function newMessagePost(req, res) {
     const time = Date.now();
     const message = req.body.message;
-    await db.query("INSERT INTO messages (user_id, message, time) VALUES ($1, $2, (to_timestamp($3 / 1000.0)))", [req.user.id, message, time])
+    const firstname = req.user.first_name;
+    await db.query("INSERT INTO messages (user_id, message, time, first_name) VALUES ($1, $2, (to_timestamp($3 / 1000.0)), $4)", [req.user.id, message, time, firstname])
     console.log("message logged");
     const response = await db.query("SELECT * FROM messages");
     const messageList = response.rows;
