@@ -8,36 +8,59 @@ const indexRouter = require('./routes/indexRouter')
 const LocalStrategy = require('passport-local');
 const indexController = require('./controllers/indexController');
 const { verify } = require('node:crypto');
+const db = require('./db/pool');
 
-// for reading forms
+// for reading POST forms (parsing req.body)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// send to router on initial load
-app.use("/", indexRouter);
 
 // set views directory
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
-// async function verifyPassword(email, password, done) {
-//     try {
-//     const user = await indexController.getUser(email);
-//         if (!user) {
-//             return done(null, false, {message: "Username does not exist."}) 
-//         };
-//         if (user.password !== password) {
-//             return done(null, false, {message: "Incorrect password."})
-//         }
-//         console.log(user);
-//         return done(null, user);
-//     } catch(err) {
-//         return done(err);
-//     }
-// }
 
-// const strategy = new LocalStrategy(verifyPassword);
-// passport.use(strategy);
+// passport set-up
+
+// this is the SID cookie that allows us to stay logged in and remember it for one day
+app.use(session(
+    {secret: "secret words!!",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {maxAge: 60 * 60 * 24 * 1000}}
+))
+
+// make sure passport uses sessions (necessary for logging in)
+app.use(passport.session());
+
+// we are using email to login, and the localStrategy callback expects a username, so we need customFields
+const customFields = {
+    usernameField: "email",
+    passwordField: "password"
+}
+
+// defining strategy with our custom verifyPassword check
+const strategy = new LocalStrategy(customFields, indexController.verifyPassword);
+passport.use(strategy);
+
+// passport sessions functions (from docs, fine to copy paste, don't need to call them)
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
+  
+passport.deserializeUser(async (id, done) => {
+try {
+    const { rows } = await db.query("SELECT * FROM users WHERE id = $1", [id]);
+    const user = rows[0];
+
+    done(null, user);
+} catch(err) {
+    done(err);
+}
+});
+
+// set-up router on initial load
+app.use("/", indexRouter);
 
 app.listen(3000);
 console.log('Your server available at http://localhost:3000');
