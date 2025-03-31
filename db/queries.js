@@ -29,3 +29,9 @@ async function cleanMessagesTable() {
     console.log(response.rows)
 }
 
+async function addAdminFieldToUsersTable() {
+    // await db.query("ALTER TABLE users ADD is_admin BOOL DEFAULT false");
+    const response = await db.query("SELECT * FROM users");
+    console.log(response.rows);
+}
+

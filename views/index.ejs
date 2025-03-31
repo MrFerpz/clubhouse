@@ -13,6 +13,27 @@
         <div>Welcome back, <%= locals.user.first_name %>.</div>
     <% } %>
 
+    <% if (locals.user) { %>
+    <div>You are:</div>
+    <ul>
+        <% if (locals.user.is_member == true) { %>
+        <li>A member</li>
+        <% } %>
+
+        <% if (locals.user.is_member == false) { %>
+        <li>Not a member</li>
+        <% } %>
+
+        <% if (locals.user.is_admin == false) { %>
+        <li>Not an admin</li>
+        <% } %>
+
+        <% if (locals.user.is_admin == true) { %>
+        <li>An admin</li>
+        <% } %>
+    </ul>
+    <% } %>
+
     <% if (!locals.user) { %>
         <a href="/signup">Sign up</a>
         <div></div>
@@ -25,6 +46,11 @@
     <a href="/join">Join the club!</a>
     <div></div>
      <% }} %>
+
+     <% if (locals.user) { if (locals.user.is_admin == false) { %>
+        <a href="/admin-signup">Sign-up to be an admin!</a>
+        <div></div>
+         <% }} %>
 
     <% if (locals.user) { %>
     <a href="/message-board">Message board</a>

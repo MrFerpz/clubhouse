@@ -114,6 +114,29 @@ function newMessageGet(req, res) {
     res.render("add-message");
 }
 
+function adminSignupGet(req, res) {
+    res.render("admin-signup");
+}
+
+async function adminSignupPost(req, res) {
+    if (req.body.adminpassword === "adminpassword") {
+        const message = "You are now an admin.";
+        await db.query("UPDATE users SET is_admin = true WHERE id = $1", [req.user.id]);
+        console.log("successfully made " + req.user.first_name + " an admin.");
+        res.render("/", {message: message})
+        } else {
+        const message = "You entered the wrong admin password."
+        res.render("/", {message: message})
+    }
+}
+
+async function messageDeletePost(req, res) {
+    const messageID = req.params.messageID;
+    await db.query ("DELETE FROM messages WHERE id = $1", [messageID]);
+    const messageList = await db.query("SELECT * FROM messages");
+    res.render("message-board", {user: req.user, messages: messageList})
+}
+
 module.exports =  { 
     indexPageGet,
     signupGet,
@@ -130,5 +153,8 @@ module.exports =  {
     joinFailureGet,
     messageBoardGet,
     newMessagePost,
-    newMessageGet
+    newMessageGet,
+    adminSignupGet,
+    adminSignupPost,
+    messageDeletePost
 };
