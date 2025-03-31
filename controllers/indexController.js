@@ -2,7 +2,7 @@ const db = require('../db/pool');
 const bcrypt = require ('bcryptjs');
 
 function indexPageGet(req, res) {
-    res.render("index");
+    res.render("index", {user: req.user});
 }
 
 function signupGet(req, res) {
@@ -29,7 +29,8 @@ function signupFailureGet(req, res) {
 
 async function signupPost (req, res, next) {
     const checkIfEmailExists = await db.query("SELECT * FROM users WHERE email = $1", [req.body.email]);
-    if (checkIfEmailExists) {
+
+    if (checkIfEmailExists.rows.length >= 1) {
         res.render("signup-failure", {message: "Signup unsuccessful as this email already exists."});
         return
     }
@@ -72,6 +73,29 @@ function loginSuccessGet(req, res) {
     res.render("login-success")
 }
 
+function joinPageGet(req, res) {
+    res.render("join")
+}
+
+async function joinPagePost(req, res) {
+    console.log(req.user.id);
+    if (req.body.secretpassword !== "secret") {
+        res.render("join-failure");
+        return
+    }
+    await db.query("UPDATE users SET is_member = true WHERE id = $1", [req.user.id]);
+    console.log("successfully joined the club!");
+    res.render("members-area");
+}
+
+function joinFailureGet(req, res) {
+    res.render("join-failure")
+}
+
+function membersAreaGet(req, res) {
+    res.render("members-area")
+}
+
 module.exports =  { 
     indexPageGet,
     signupGet,
@@ -82,5 +106,9 @@ module.exports =  {
     verifyPassword,
     loginFailureGet,
     loginSuccessGet,
-    signupFailureGet
+    signupFailureGet,
+    joinPageGet,
+    joinPagePost,
+    joinFailureGet,
+    membersAreaGet
 };

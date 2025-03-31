@@ -11,6 +11,3 @@ async function printTable() {
     console.log(response.rows);
 }
 
-
-
-
