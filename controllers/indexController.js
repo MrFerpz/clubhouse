@@ -17,6 +17,10 @@ function getUser(email) {
     return db.getUser(email)
 }
 
+function signupSuccessGet(req, res) {
+    res.render("signup-success");
+}
+
 async function signupPost (req, res, next) {
     const hashPassword = await bcrypt.hash(req.body.password, 10);
     try {
@@ -24,9 +28,9 @@ async function signupPost (req, res, next) {
         res.redirect("/signup-success")
     } catch(error) {
         console.log(error);
+        res.redirect("/");
         // next(error);
     }
-    res.redirect("/")
 }
 
 module.exports =  { 
@@ -34,5 +38,6 @@ module.exports =  {
     signupGet,
     loginGet,
     getUser,
-    signupPost
+    signupPost,
+    signupSuccessGet
 };
