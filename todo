@@ -1,0 +1,11 @@
+
+- "Add message" button to members area
+- Return a messages form
+- Submit those messages to a table in PSQL, with columns for author, message, timestamp
+- Render those messages in the members area
+- Add a button to homepage where non-members can see message but not the timestamp and author
+- Add admin field to users database
+- Add a way to become an admin (like the secret form)
+- Add conditional rendering to message board with delete 
+- Improve the UX of when you sign-up, login, etc. Maybe it redirects to homepage with a message, instead of individual ejs views?
+- Style with CSS
