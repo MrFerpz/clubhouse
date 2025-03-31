@@ -59,6 +59,16 @@ try {
 }
 });
 
+// let them log-out as well. passport has .logout() built in
+app.get("/log-out", (req, res, next) => {
+    req.logout((err) => {
+      if (err) {
+        return next(err);
+      }
+      res.redirect("/");
+    });
+  });
+
 // set-up router on initial load
 app.use("/", indexRouter);
 

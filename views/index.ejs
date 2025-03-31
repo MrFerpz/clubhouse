@@ -3,15 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hello</title>
+    <title>Clubhouse</title>
 </head>
 <body>
-    <div>Hello</div>
+    <div>The Clubhouse</div>
+    <div></div>
+
     <% if (locals.user) { %>
-        <div>Currently logged in as: <%= locals.user.first_name %></div>
+        <div>Welcome back, <%= locals.user.first_name %>.</div>
     <% } %>
-    <a href="/signup">Sign up</a>
-    <a href="/login">Login</a>
+
+    <% if (!locals.user) { %>
+        <a href="/signup">Sign up</a>
+        <div></div>
+        <a href="/login">Login</a>
+        <div></div>
+        <% } %>
+
+    
+       <% if (locals.user) { if (locals.user.is_member == false) { %>
     <a href="/join">Join the club!</a>
+    <div></div>
+     <% }} %>
+
+        <% if (locals.user) { if (locals.user.is_member == true) { %>
+        <a href="/members-area">Members area</a>
+        <div></div>
+     <% }} %>
+
+    <% if (locals.user) { %>
+    <a href="/log-out">Log out</a>
+    <div></div>
+    <% } %>
 </body>
 </html>
