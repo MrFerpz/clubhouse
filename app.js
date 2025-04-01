@@ -19,6 +19,8 @@ app.use(express.urlencoded({ extended: true }));
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// set css / other static asset directory
+app.use('/static', express.static('public'))
 
 // passport set-up
 

@@ -4,56 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Message Board</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <div>Welcome to the message board, <%= locals.user.first_name %></div>
-    <div>You are:</div>
-    <ul>
-        <% if (locals.user.is_member == true) { %>
-        <li>A member</li>
-        <% } %>
-
-        <% if (locals.user.is_member == false) { %>
-        <li>Not a member</li>
-        <% } %>
-
-        <% if (locals.user.is_admin == false) { %>
-        <li>Not an admin</li>
-        <% } %>
-
-        <% if (locals.user.is_admin == true) { %>
-        <li>An admin</li>
-        <% } %>
-    </ul>
+    <div>Welcome to the message board, <%= locals.user.first_name %>.</div>
 
     <div>If you are a member, you can make new posts, as well as see the authors and timestamps for each post.</div>
 
-    <% if (locals.messages.length > 0 && locals.user.is_member == true) { %>
+    <% if (locals.messages && locals.messages.length > 0 && locals.user.is_member == true) { %>
         <% locals.messages.forEach((message) => { %>
-            <div><%= message.first_name %></div>
-            <div><%= message.time %></div>
-            <div><%= message.message %></div>
+            <div class="message">
+            <div class="first-name""><%= message.first_name %> @ </div>
+            <span class="message-time"><%= message.time %></span>
+            <div class="message-content">"<%= message.message %>"</div>
             <% if (locals.user.is_admin == true) { %>
                 <form method="post" action="/message-board/delete-post/<%= message.id %>">
                 <button type="submit">Delete Post</button>
                 </form>
+            </div>
     <% }})} %>
 
-    <% if (locals.messages.length > 0 && locals.user.is_member == false) { %>
+    <% if (locals.messages && locals.messages.length > 0 && locals.user.is_member == false) { %>
         <% locals.messages.forEach((message) => { %>
+            <div class="message">
             <div>****** (name hidden from non-members)</div>
             <div>****** (time hidden from non-members)</div>
             <div><%= message.message %></div>
             <div></div>
+        </div>
     <% })} %>
 
     <% if (locals.user.is_member == false) { %>
-        <a href="join">Join the members club!</a>
+        <a href="/join">Join the members club!</a>
     <% } %>
 
     <% if (locals.user.is_member == true) { %>
-        <a href="add-message">New Post</a>
+        <a href="/add-message">New Post</a>
     <% } %>
 
+    <a href="/">Home</a>
 </body>
 </html>

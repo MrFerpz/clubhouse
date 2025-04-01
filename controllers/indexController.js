@@ -123,10 +123,10 @@ async function adminSignupPost(req, res) {
         const message = "You are now an admin.";
         await db.query("UPDATE users SET is_admin = true WHERE id = $1", [req.user.id]);
         console.log("successfully made " + req.user.first_name + " an admin.");
-        res.render("/", {message: message})
+        res.render("index", {message: message})
         } else {
         const message = "You entered the wrong admin password."
-        res.render("/", {message: message})
+        res.render("index", {message: message})
     }
 }
 

@@ -4,9 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Clubhouse</title>
+    <link rel="stylesheet" href="/static/styles.css">
 </head>
 <body>
-    <div>The Clubhouse</div>
+    <div class="index-card-container">
+    <div class="index-card">
+    <h1>The Clubhouse</h1>
     <div></div>
 
     <% if (locals.user) { %>
@@ -58,5 +61,7 @@
     <a href="/log-out">Log out</a>
     <div></div>
     <% } %>
+    </div>
+</div>
 </body>
 </html>
